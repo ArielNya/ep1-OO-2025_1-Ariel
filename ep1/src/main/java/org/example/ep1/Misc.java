@@ -45,7 +45,7 @@ public class Misc {
         // Map each label to its corresponding FXML file
         switch (sceneName) {
             case "Aluno":
-                fxmlFile = "aluno-view.fxml";
+                fxmlFile = "view.fxml";
                 sceneTitle = "Gestão de Alunos";
                 break;
             case "Diciplina/Turma":

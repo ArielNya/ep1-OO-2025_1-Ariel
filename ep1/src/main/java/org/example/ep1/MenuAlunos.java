@@ -2,31 +2,44 @@ package org.example.ep1;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuAlunos {
+public class MenuAlunos{
 
-    private String[] temp = {
-            "Aluno1",
-            "Aluno2",
-            "Aluno3"
-    };
-    private ArrayList<String> alunosL = new ArrayList<String>(List.of(temp));
 
-    public ArrayList<String> getListaAlunos(){
+    private ArrayList<Aluno> alunosL = new ArrayList<>();
+
+    public MenuAlunos() {
+        // Initialize with some sample students
+        alunosL.add(new Aluno("João Silva", "Filosofia", 123));
+        alunosL.add(new Aluno("Maria Santos", "Engenharia", 2350));
+        alunosL.add(new Aluno("Pedro Costa", "Nyan", 567));
+    }
+    public ArrayList<Aluno> getListaAlunos(){
         return alunosL;
     }
-    public void addAluno(String aluno){
+    public void addAluno(Aluno aluno){
+        for(Aluno a : alunosL){
+            if(a.getMatricula() == aluno.getMatricula()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.showAndWait();
+                return;
+            }
+        }
         alunosL.add(aluno);
     }
     public void removeAluno(int index){
         alunosL.remove(index);
     }
-    public void showAlunos(ListView<String> list){
+    public void showAlunos(ListView<Aluno> list){
+        list.getItems().clear();
         list.getItems().addAll(alunosL);
+
     }
+
 }
