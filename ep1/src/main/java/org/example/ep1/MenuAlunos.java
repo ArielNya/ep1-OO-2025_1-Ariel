@@ -16,11 +16,19 @@ public class MenuAlunos{
 
     public MenuAlunos() {
         // Initialize with some sample students
-        alunosL.add(new Aluno("João Silva", "Filosofia", 123));
-        alunosL.add(new Aluno("Maria Santos", "Engenharia", 2350));
-        alunosL.add(new Aluno("Pedro Costa", "Nyan", 567));
+        alunosL.add(new Aluno("João Silva", "Filosofia", "123"));
+        alunosL.add(new Aluno("Maria Santos", "Engenharia", "2350"));
+        alunosL.add(new Aluno("Pedro Costa", "Nyan", "567"));
     }
-    public ArrayList<Aluno> getListaAlunos(){
+    public ListView<String> getListaAlunos(){
+        ListView<String> helper = new ListView<>();
+        for(Aluno aluno : alunosL){
+            helper.getItems().add(aluno.getName());
+        }
+        return helper;
+    }
+
+    public ArrayList<Aluno> getLista(){
         return alunosL;
     }
     public void addAluno(Aluno aluno){
@@ -36,9 +44,13 @@ public class MenuAlunos{
     public void removeAluno(int index){
         alunosL.remove(index);
     }
-    public void showAlunos(ListView<Aluno> list){
+    public void showAlunos(ListView<String> list){
         list.getItems().clear();
-        list.getItems().addAll(alunosL);
+        for(Aluno aluno : alunosL){
+            String nome = aluno.getName();
+            list.getItems().add(nome);
+        }
+
 
     }
 

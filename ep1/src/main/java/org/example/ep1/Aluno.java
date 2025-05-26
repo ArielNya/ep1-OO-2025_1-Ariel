@@ -3,15 +3,16 @@ package org.example.ep1;
 public class Aluno {
     private String name;
     private String curso;
-    private int matricula;
+    private String matricula;
 
-    public Aluno(String nome, String curso, int matricula){
+    public Aluno(String nome, String curso, String matricula){
         this.name = nome;
         this.curso = curso;
         this.matricula = matricula;
     }
 
-    public int getMatricula() {
+
+    public String getMatricula() {
         return matricula;
     }
 
@@ -23,5 +24,5 @@ public class Aluno {
         return name;
     }
 
-    
+
 }
