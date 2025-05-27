@@ -13,7 +13,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <ListView fx:id="alunos" layoutX="184.0" layoutY="84.0" prefHeight="317.0" prefWidth="415.0" />
+      <ListView fx:id="alunoNome" layoutX="184.0" layoutY="84.0" prefHeight="317.0" prefWidth="415.0" />
       <ListView fx:id="list" layoutY="59.0" prefHeight="342.0" prefWidth="138.0" />
       <Button fx:id="add" layoutX="184.0" layoutY="59.0" mnemonicParsing="false" text="Adicionar Aluno" />
    </children>

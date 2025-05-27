@@ -10,23 +10,18 @@ import java.util.List;
 
 public class MenuAlunos {
 
-    private String[] temp = {
-            "Aluno1",
-            "Aluno2",
-            "Aluno3"
-    };
-    private ArrayList<String> alunosL = new ArrayList<String>(List.of(temp));
+    private final ArrayList<Aluno> alunos = new ArrayList<>();
 
-    public ArrayList<String> getListaAlunos(){
-        return alunosL;
+    public ArrayList<Aluno> getListaAlunos(){
+        return alunos;
     }
-    public void addAluno(String aluno){
-        alunosL.add(aluno);
+    public void addAluno(Aluno aluno){
+        alunos.add(aluno);
     }
     public void removeAluno(int index){
-        alunosL.remove(index);
+        alunos.remove(index);
     }
-    public void showAlunos(ListView<String> list){
-        list.getItems().addAll(alunosL);
+    public void showAlunos(ListView<Aluno> list){
+        list.getItems().setAll(alunos);
     }
 }
