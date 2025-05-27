@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -39,11 +40,37 @@ public class AlunoControler implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        list.setOnMouseClicked(event -> {
+            Label selectedLabel = list.getSelectionModel().getSelectedItem();
+            if (selectedLabel != null) {
+                String fxmlFile = "";
+                switch (selectedLabel.getText()) {
+                    case "Aluno":
+                        fxmlFile = "aluno.fxml";
+                        break;
+                    case "Diciplina/Turma":
+                        fxmlFile = "diciplina.fxml";
+                        break;
+                    case "Avaliação/Frequência":
+                        fxmlFile = "avaliacao_frequencia.fxml";
+                        break;
+                }
+                try {
+                    // Load the new FXML
+                    Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+                    Stage stage = (Stage) list.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         /*
         for (String modo : modos) {
             list.getItems().add(new Label(modo));
          */
-        setupContextMenuFactory();
+        setupContextMenu();
         setupListView();
         add.setOnAction(e->{
             handleAddButton();
@@ -59,7 +86,13 @@ public class AlunoControler implements Initializable {
                 setText(empty ? null : item.getText());
             }
         });
-
+        alunos.setCellFactory(lv -> new ListCell<Aluno>() {
+            @Override
+            protected void updateItem(Aluno aluno, boolean empty) {
+                super.updateItem(aluno, empty);
+                setText(empty || aluno == null ? "" : aluno.toString());
+            }
+        });
 
         // Add your existing modes
         for(String modo : modos) {
@@ -103,48 +136,51 @@ public class AlunoControler implements Initializable {
         });
     }
 
-    private void setupContextMenuFactory() {
-        contextMenuFactory.addAction("Delete", entity -> {
-            if(entity instanceof Aluno) {
-                int index = alunos.getItems().indexOf(entity);
-                if(index >= 0) {
-                    menuAlunos.removeAluno(index);
-                    alunos.getItems().remove(index);
+    private void setupContextMenu() {
+        alunos.setCellFactory(lv -> {
+            ListCell<Aluno> cell = new ListCell<>() {
+                @Override
+                protected void updateItem(Aluno aluno, boolean empty) {
+                    super.updateItem(aluno, empty);
+                    if (empty || aluno == null) {
+                        setText(null);
+                        setGraphic(null);
+                        setContextMenu(null);
+                    } else {
+                        setText(aluno.toString());
+                        setupCellContextMenu(this, aluno);
+                    }
                 }
-            }
-            // Add other entity types here
+            };
+            return cell;
         });
+    }
+
+    private void setupCellContextMenu(ListCell<Aluno> cell, Aluno aluno) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem deleteItem = new MenuItem("Delete");
+        deleteItem.setOnAction(e -> {
+            menuAlunos.removeAluno(aluno.getId());
+            alunos.getItems().remove(aluno);
+        });
+
+        contextMenu.getItems().addAll(deleteItem);
+        cell.setContextMenu(contextMenu);
+
+
+        cell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(cell, event.getScreenX(), event.getScreenY());
+            }
+        });
+
+    }
 
 
 
         //menuAlunos.showAlunos(alunos);
 
         // Add mouse click listener to the list
-        list.setOnMouseClicked(event -> {
-            Label selectedLabel = list.getSelectionModel().getSelectedItem();
-            if (selectedLabel != null) {
-                String fxmlFile = "";
-                switch (selectedLabel.getText()) {
-                    case "Aluno":
-                        fxmlFile = "aluno.fxml";
-                        break;
-                    case "Diciplina/Turma":
-                        fxmlFile = "diciplina.fxml";
-                        break;
-                    case "Avaliação/Frequência":
-                        fxmlFile = "avaliacao_frequencia.fxml";
-                        break;
-                }
-                try {
-                    // Load the new FXML
-                    Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
-                    Stage stage = (Stage) list.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
     }
-}

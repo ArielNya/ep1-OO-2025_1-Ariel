@@ -5,6 +5,7 @@ module org.example.ep1 {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
+    requires java.desktop;
 
     opens org.example.ep1 to javafx.fxml;
     exports org.example.ep1;
